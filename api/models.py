@@ -39,9 +39,13 @@ class PhotoVerificationRequest(models.Model):
         )
         base_url = settings.LMS_BASE
         url = base_url + self.photoid
-        data = request.urlopen(request.Request(url)).read()
-        result = decode_and_decrypt(data, aes_key)
-        return base64.b64encode(result).decode("utf-8")
+        try:
+            data = request.urlopen(request.Request(url)).read()
+            result = decode_and_decrypt(data, aes_key)
+            return base64.b64encode(result).decode("utf-8")
+        except Exception as e:
+            log.exception("Error loading photo_id {} ({})".format(self.id, url))
+            return ""
 
     @property
     def photo_user(self):
@@ -56,5 +60,5 @@ class PhotoVerificationRequest(models.Model):
             result = decode_and_decrypt(data, aes_key)
             return base64.b64encode(result).decode("utf-8")
         except Exception as e:
-            log.exception("Error loading image {} ({})".format(self.id, url))
+            log.exception("Error loading photo_user {} ({})".format(self.id, url))
             return ""
