@@ -6,6 +6,8 @@ from django.db import models
 from urllib import request
 
 import base64
+import logging
+log = logging.getLogger(__name__)
 
 from .encryption.ssencrypt import rsa_decrypt, decode_and_decrypt
 
@@ -49,6 +51,10 @@ class PhotoVerificationRequest(models.Model):
         )
         base_url = settings.LMS_BASE
         url = base_url + self.userphoto
-        data = request.urlopen(request.Request(url)).read()
-        result = decode_and_decrypt(data, aes_key)
-        return base64.b64encode(result).decode("utf-8")
+        try:
+            data = request.urlopen(request.Request(url)).read()
+            result = decode_and_decrypt(data, aes_key)
+            return base64.b64encode(result).decode("utf-8")
+        except Exception as e:
+            log.Exception("Error loading image {} ({})".format(self.id, url))
+            return ""
