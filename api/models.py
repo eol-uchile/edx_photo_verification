@@ -56,5 +56,5 @@ class PhotoVerificationRequest(models.Model):
             result = decode_and_decrypt(data, aes_key)
             return base64.b64encode(result).decode("utf-8")
         except Exception as e:
-            log.Exception("Error loading image {} ({})".format(self.id, url))
+            log.exception("Error loading image {} ({})".format(self.id, url))
             return ""
