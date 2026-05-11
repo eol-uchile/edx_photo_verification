@@ -27,12 +27,6 @@ class PhotoValidationListView(ListView):
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
 
-    def get_context_data(self, **kwargs):
-        context = super(PhotoValidationListView, self).get_context_data(**kwargs)
-        for item in context["photoverificationrequest_list"]:
-            print(item)
-        return context
-
 
 class PhotoValidationSendResponse(View):
     @method_decorator(login_required)
