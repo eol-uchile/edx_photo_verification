@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views.generic import ListView, View
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 
 from api.models import PhotoVerificationRequest
 
